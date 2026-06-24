@@ -1,0 +1,35 @@
+.*
+*pycache*
+*\[OLD\]*
+
+*\_\_*\_\_*
+
+backend/config/*.json
+backend/data/
+backend/logs/app.log
+backend/memory
+backend/uv.lock
+backend/workflows
+backend/api
+backend/alembic/README
+backend/test/requests.txt
+
+frontend/node_modules
+frontend/README_local.md
+
+/commit_logs
+/install.ps1
+/Meeting Summarizer_v1_files
+/Meeting Summarizer_v1.html
+/planning.md
+/new\ 1.md
+/*.bat
+structure.txt
+next-env.d.ts
+/dump*
+
+!.gitignore
+!.gitlab-ci.yml
+show_tree.ps1
+!.env.example
+!.dockerignore

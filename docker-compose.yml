@@ -1,0 +1,86 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/logs:/app/logs
+
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:17
+
+    restart: always
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meetingsummarizer
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  ollama:
+    image: ollama/ollama:latest
+
+    env_file:
+      - .env
+
+    environment:
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY}
+
+    ports:
+      - "11434:11434"
+
+    volumes:
+      - ollama_data:/root/.ollama
+  ollama-init:
+    
+    image: ollama/ollama
+    
+    depends_on:
+      - ollama
+
+    env_file:
+      - .env
+
+    entrypoint: ["sh", "-c", "
+      sleep 10 &&
+      ollama pull $OLLAMA_CLOUD_MODEL &&
+      ollama pull $OLLAMA_LOCAL_MODEL &&
+      echo 'Models ready'"
+    ]
+
+    environment:
+      OLLAMA_HOST: ${OLLAMA_LOCAL_URL}
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  postgres_data:
+  ollama_data:
