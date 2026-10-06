@@ -468,3 +468,7 @@ Stores include:
 * No user-specific Google OAuth
 * Limited evaluation analytics dashboard
 * WebSocket events are currently in-memory and non-persistent
+
+## Author
+
+**Saransh**
